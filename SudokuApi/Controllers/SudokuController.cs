@@ -4,10 +4,10 @@ namespace SudokuApi.Controllers
 {
 
     [ApiController]
-    [Route("api[controller]")]
+    [Route("api/[controller]")]
     public class SudokuController : ControllerBase
     {
-        [HttpPost("sudokusolver")]
+        [HttpPost]
         public IActionResult Post([FromBody] int[][][] data)
         {
 
