@@ -26,7 +26,7 @@ namespace SudokuApi.Controllers
                     }
                 }
 
-                return Ok(new { result = data });
+                return Ok(new { returnedArray = data, returnedText = "tady bude text", success = true });
             }
             catch (Exception ex)
             {
