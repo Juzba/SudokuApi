@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SudokuApi.SudokuSolver;
 
 namespace SudokuApi.Controllers
 {
@@ -7,42 +8,31 @@ namespace SudokuApi.Controllers
     [Route("api/[controller]")]
     public class SudokuController : ControllerBase
     {
+        static int _count = 0;
+
         [HttpPost]
         public IActionResult Post([FromBody] int[][][] data)
         {
-
+            string returnedText = "Spuštěno Online: " + ++_count;
 
             try
             {
 
-                foreach (var matrix in data)
-                {
-                    foreach (var array in matrix)
-                    {
-                        for (int i = 0; i < array.Length; i++)
-                        {
-                            array[i] = 5;
-                        }
-                    }
-                }
+                if (data == null || data.Length != 9 || data[0].Length != 9 || data[0][0].Length != 10)
+                    return StatusCode(500, new { error = "Received data null or Array lenght is Wrong!" });
 
-                return Ok(new { returnedArray = data, returnedText = "tady bude text", success = true });
+
+
+                int[][][] returnedArray = SudokuMain.Main(data);
+
+                return Ok(new { returnedArray, returnedText, success = true });
+
+
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, new { error = ex.Message });
             }
-
-
-
-
-
-
         }
-
-
-
-
     }
 }
