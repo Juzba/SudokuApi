@@ -23,7 +23,7 @@ namespace SudokuApi.Controllers
                     return StatusCode(401, new { error = "Received data null or Array lenght is Wrong!" });
                 }
 
-                int[][][] returnedArray = SudokuMain.Main(data);
+                int[][][] returnedArray = SudokuMain.SolveMain(data);
 
                 return Ok(new { returnedArray, returnedText, success = true });
 

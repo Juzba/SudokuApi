@@ -3,20 +3,36 @@
     public class SudokuMain
     {
 
-        public static int[][][] Main(int[][][] data)
+        public static int[][][] SolveMain(int[][][] data)
         {
             // převod pole int[,,] z příchozího int[][][]
-           int[,,] pole = ChangeArrayFromInput(data);
+            int[,,] array = ChangeArrayFromInput(data);
+
+
+            //scan for rows
+            ScanMetods.RowsOrCollumnsScan(array, false);
+            // scan for collumns
+            ScanMetods.RowsOrCollumnsScan(array, true);
+            //if number is not minus set number to plus(small numbers from array Z)
+            ScanMetods.PossibleNumbersScan(array);
+
+            //// If on row is only one small number -> set number as big number
+            FindNumber.RowSearch(array);
+
+
+            //// scan for rows
+            ScanMetods.RowsOrCollumnsScan(array, false);
+            //// scan for collumns
+            ScanMetods.RowsOrCollumnsScan(array, true);
 
 
 
 
-            pole[8, 0, 0] = 20;
 
 
 
 
-            return ChangeArrayToOutput(pole);
+            return ChangeArrayToOutput(array);
         }
 
 
