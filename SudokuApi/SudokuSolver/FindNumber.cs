@@ -95,8 +95,8 @@
                                 if (array[Y, X, number] == number) { count++; posY = Y; posX = X; }
                             }
                             if (count > 2) break;
-                            if (count == 1 && array[posY, posX, 0] == 0) array[posY, posX, 0] = number; 
                         }
+                        if (count == 1 && array[posY, posX, 0] == 0) array[posY, posX, 0] = number;
                     }
                 }
             }

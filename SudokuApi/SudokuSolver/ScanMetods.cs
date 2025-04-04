@@ -6,9 +6,9 @@
         public static int[,,] Main(int[,,] array)
         {
             //scan for rows
-            //RowsOrCollumnsScan(array, false);
+            RowsOrCollumnsScan(array, false);
             // scan for collumns
-            //RowsOrCollumnsScan(array, true);
+            RowsOrCollumnsScan(array, true);
             // Clear all small numbers in section if same big number is in section
             ClearSmallNumbersInSection(array);
             return array;
@@ -75,41 +75,38 @@
 
 
         // Number 3
-        // Clear all small numbers in section if same big number is in section
-
+        // Setl small numbers in section to minus if same big number is in section
         private static int[,,] ClearSmallNumbersInSection(int[,,] array)
         {
 
-            // for number 1 - 9 in sudoku
+            //// for number 1 - 9 in sudoku
             for (int number = 1; number < 10; number++)
             {
 
                 // for section Y X
                 for (int sectionY = 0; sectionY < 3; sectionY++)
-                {
                     for (int sectionX = 0; sectionX < 3; sectionX++)
                     {
 
                         bool isNumberFind = false;
 
                         for (int Y = 0 + (sectionY * 3); Y < 3 + (sectionY * 3); Y++)
-                        {
                             for (int X = 0 + (sectionX * 3); X < 3 + (sectionX * 3); X++)
                             {
-                                if (!isNumberFind && array[X, Y, 0] == number)
+                                if (!isNumberFind && array[Y, X, 0] == number)
                                 {
                                     isNumberFind = true;
                                     Y = -1 + (sectionY * 3);
                                     break;
                                 }
-                                else if (isNumberFind) 
+                                else if (isNumberFind)
                                 {
                                     array[Y, X, number] = -1 * number;
                                 }
                             }
-                        }
+
                     }
-                }
+                
             }
             return array;
         }

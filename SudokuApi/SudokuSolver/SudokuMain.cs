@@ -8,43 +8,44 @@
             // převod pole int[,,] z příchozího int[][][]
             int[,,] array = ChangeArrayFromInput(data);
 
-            if (true) {
-                ScanMetods.Main(array);
+            if (false)
+            {
+                //ScanMetods.Main(array);
             }
             else
             {
 
-            //Scan array[,,] with diferent metods to find posible numbers.
-            ScanMetods.Main(array);
-            //if number is not minus set number to plus(small numbers from array Z)
-            // staci pouze poprve !!
-            ScanMetods.PossibleNumbersScan(array);
+                //Scan array[,,] with diferent metods to find posible numbers.
+                ScanMetods.Main(array);
+                //if number is not minus set number to plus(small numbers from array Z)
+                // staci pouze poprve !!
+                ScanMetods.PossibleNumbersScan(array);
 
 
 
-            //// If on rows is only one small number -> set number as big number
-            FindNumber.RowsOrCollumnsSearch(array, false);
-            //// If on Columns is only one small number -> set number as big number
-            FindNumber.RowsOrCollumnsSearch(array, true);
+                //// If on rows is only one small number -> set number as big number
+                FindNumber.RowsOrCollumnsSearch(array, false);
+                //// If on Columns is only one small number -> set number as big number
+                FindNumber.RowsOrCollumnsSearch(array, true);
 
 
-            //Scan array[,,] with diferent metods to find posible numbers.
-            ScanMetods.Main(array);
+                //Scan array[,,] with diferent metods to find posible numbers.
+                ScanMetods.Main(array);
 
 
-            // if only one small number in segment set number as big.
-            FindNumber.OneSmallNumberToBigNumber(array);
+                // if only one small number in segment set number as big.
+                FindNumber.OneSmallNumberToBigNumber(array);
 
 
-            //Scan array[,,] with diferent metods to find posible numbers.
-            ScanMetods.Main(array);
+                //Scan array[,,] with diferent metods to find posible numbers.
+                ScanMetods.Main(array);
 
 
-            // if only one small number in section set it to big number.
-            //FindNumber.OnlyOneSmallNumberInSection(array);
+                // if only one small number in section set it to big number.
+                FindNumber.OnlyOneSmallNumberInSection(array);
 
 
-
+                //ScanMetods.Main(array);
             }
 
 
