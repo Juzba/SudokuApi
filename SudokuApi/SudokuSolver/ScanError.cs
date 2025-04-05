@@ -5,13 +5,25 @@
         //false without errors
         public static bool MainFunc(int[,,] array)
         {
-
             return
                 AreSameNumbersInLine(array, false)
-               || AreSameNumbersInLine(array, true)
-               || AreSameNumbersInOneSection(array);
+                || AreSameNumbersInLine(array, true)
+                || AreSameNumbersInOneSection(array)
+                || IsNoMorePosibleMoves(array);
         }
 
+
+        //false without errors, 
+        public static bool FirstScanWrongImput(int[,,] array, out string errorMesage)
+        {
+
+            if (IsMinimumNumbersError(array)) { errorMesage = "Chybné zadání: Minimální počet čísel musí být 17."; return true; }
+            if (AreSameNumbersInLine(array, false)
+                || AreSameNumbersInLine(array, true)
+                || AreSameNumbersInOneSection(array)) { errorMesage = "Chybné zadání: Nesmí být stejné čísla v řádku nebo sekci"; return true; }
+            errorMesage = "";
+            return false;
+        }
 
 
 
@@ -54,16 +66,48 @@
                                     if (count > 1) return true;
                                 }
                     }
-                
+
             return false;
         }
 
-       
+
+        // if box has no posible numbers
+
+        private static bool IsNoMorePosibleMoves(int[,,] array)
+        {
+            for (int Y = 0; Y < 9; Y++)
+                for (int X = 0; X < 9; X++)
+                {
+                    bool isFound = false;
+                    for (int number = 0; number < 10; number++)
+                    {
+                        if (array[Y, X, number] > 0) { isFound = true; break; }
+                    }
+                    if (!isFound)
+                        return true;
+                }
+
+
+            return false;
+        }
 
 
 
+        // Minimal input numbers must be 17
 
-
+        private static bool IsMinimumNumbersError(int[,,] array)
+        {
+            int count = 0;
+            for (int Y = 0; Y < 9; Y++)
+            {
+                for (int X = 0; X < 9; X++)
+                {
+                    if (array[Y, X, 0] > 0) count++;
+                }
+                if (count > 16) return false;
+            }
+            return true;
+        }
 
 
 

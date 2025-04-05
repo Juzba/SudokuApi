@@ -4,31 +4,36 @@ public class SudokuMain
 {
     static int _count;
 
-    public static int[][][] SolveMain(int[][][] data, out int count, out bool isError)
+    public static int[][][] SolveMain(int[][][] data, out string infoMessage)
     {
         _count = 0;
+        infoMessage = "ok";
+        bool isWrongInput;
 
         // from int [][][] to int [,,]
         int[,,] array = Components.ChangeArrayFromInput(data);
 
         // scan metods -> scan for two same numbers in one row, collumn or section and return bool
-        isError = ScanError.MainFunc(array);
+        // first time -> catch wrong input
+        isWrongInput = ScanError.FirstScanWrongImput(array, out string errorMesage);
+        if (isWrongInput) infoMessage = errorMesage;
 
 
-        if (!isError)
+        if (!isWrongInput)
         {
             BasicMetodsForSolve(array);
-            if (true)
-            {
+
+            if (!ScanMetods.IsSudokuSolved(array) && !ScanError.MainFunc(array))
                 // trying numbers and catching error until solve sudoku
                 array = Components.ArrayCopy(AdvencedMetods(array));
-            }
+
+
+            // final controll for errors in sudoku
+            if (ScanError.MainFunc(array)) { errorMesage = "Vyskytla se chyba!"; }
+            else if (ScanMetods.IsSudokuSolved(array)) { errorMesage = $"Sudoku vyřešeno za {_count} cyklů."; }
         }
 
-        // final controll for errors in sudoku
-        isError = ScanError.MainFunc(array);
 
-        count = _count;
         return Components.ChangeArrayToOutput(array);
     }
 

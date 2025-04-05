@@ -24,15 +24,15 @@ namespace SudokuApi.Controllers
 
 
 
-                int[][][] returnedArray = SudokuMain.SolveMain(data, out int count, out bool isError);
+                int[][][] returnedArray = SudokuMain.SolveMain(data, out string infoMessage);
 
 
 
-                string returnedText = $"Spuštěno Online: {_count}, počet cyklů: {count}, Chyba?: {isError}";
+                string statusText = $"Spuštěno Online: {_count}";
 
                 // vratit chybovou hlašku pokud jsou dve stejne cisla v radku, sekci nebo collumns
 
-                return Ok(new { returnedArray, returnedText, success = true });
+                return Ok(new { returnedArray, statusText, infoMessage, success = true });
 
 
             }
