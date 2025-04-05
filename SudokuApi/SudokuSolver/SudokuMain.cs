@@ -1,92 +1,143 @@
-﻿namespace SudokuApi.SudokuSolver
+﻿namespace SudokuApi.SudokuSolver;
+
+public class SudokuMain
 {
-    public class SudokuMain
+    static int _count;
+
+    public static int[][][] SolveMain(int[][][] data, out int count, out bool isError)
     {
+        _count = 0;
 
-        public static int[][][] SolveMain(int[][][] data)
+        // from int [][][] to int [,,]
+        int[,,] array = Components.ChangeArrayFromInput(data);
+
+        // scan metods -> scan for two same numbers in one row, collumn or section and return bool
+        isError = ScanError.MainFunc(array);
+
+
+        if (!isError)
         {
-            // převod pole int[,,] z příchozího int[][][]
-            int[,,] array = ChangeArrayFromInput(data);
-
-            if (false)
+            BasicMetodsForSolve(array);
+            if (true)
             {
-                //ScanMetods.Main(array);
+                // trying numbers and catching error until solve sudoku
+                array = Components.ArrayCopy(AdvencedMetods(array));
             }
-            else
-            {
-
-                //Scan array[,,] with diferent metods to find posible numbers.
-                ScanMetods.Main(array);
-                //if number is not minus set number to plus(small numbers from array Z)
-                // staci pouze poprve !!
-                ScanMetods.PossibleNumbersScan(array);
-
-
-
-                //// If on rows is only one small number -> set number as big number
-                FindNumber.RowsOrCollumnsSearch(array, false);
-                //// If on Columns is only one small number -> set number as big number
-                FindNumber.RowsOrCollumnsSearch(array, true);
-
-
-                //Scan array[,,] with diferent metods to find posible numbers.
-                ScanMetods.Main(array);
-
-
-                // if only one small number in segment set number as big.
-                FindNumber.OneSmallNumberToBigNumber(array);
-
-
-                //Scan array[,,] with diferent metods to find posible numbers.
-                ScanMetods.Main(array);
-
-
-                // if only one small number in section set it to big number.
-                FindNumber.OnlyOneSmallNumberInSection(array);
-
-
-                //ScanMetods.Main(array);
-            }
-
-
-
-            return ChangeArrayToOutput(array);
         }
 
+        // final controll for errors in sudoku
+        isError = ScanError.MainFunc(array);
 
-        private static int[,,] ChangeArrayFromInput(int[][][] data)
+        count = _count;
+        return Components.ChangeArrayToOutput(array);
+    }
+
+
+
+    private static int[,,] BasicMetodsForSolve(int[,,] array)
+    {
+        int[,,] arrayCopy = new int[9, 9, 10];
+
+        do
         {
-            int[,,] inputArray = new int[9, 9, 10];
+            arrayCopy = Components.ArrayCopy(array);
 
-            for (int y = 0; y < data.Length; y++)
-                for (int x = 0; x < data[0].Length; x++)
-                    for (int z = 0; z < data[0][0].Length; z++)
-                        inputArray[y, x, z] = data[y][x][z];
-
-            return inputArray;
-        }
+            //Scan array[,,] with diferent metods to find posible numbers.
+            ScanMetods.MainFunc(array, false);
+            //if number is not minus set number to plus(small numbers from array Z)
+            //only one is enought!
+            if (_count == 1) ScanMetods.PossibleNumbersScan(array);
 
 
-        private static int[][][] ChangeArrayToOutput(int[,,] data)
-        {
-            int[][][] outputArray = new int[9][][];
 
-            for (int y = 0; y < 9; y++)
-            {
-                outputArray[y] = new int[9][];
+            //// If on rows is only one small number -> set number as big number
+            FindNumber.RowsOrCollumnsSearch(array, false);
+            //// If on Columns is only one small number -> set number as big number
+            FindNumber.RowsOrCollumnsSearch(array, true);
 
-                for (int x = 0; x < 9; x++)
+
+            //Scan array[,,] with diferent metods to find posible numbers.
+            ScanMetods.MainFunc(array, false);
+
+
+            // if only one small number in segment set number as big.
+            FindNumber.OneSmallNumberToBigNumber(array);
+
+
+            //Scan array[,,] with diferent metods to find posible numbers.
+            ScanMetods.MainFunc(array, true);
+
+
+            // if only one small number in section set it to big number.
+            FindNumber.OnlyOneSmallNumberInSection(array);
+
+
+            ScanMetods.MainFunc(array, true);
+
+            _count++;
+        } while (!Components.Array3DCompare(array, arrayCopy));
+
+        return array;
+    }
+
+
+    private static int[,,] AdvencedMetods(int[,,] array)
+    {
+        int[,,] arrayCopy = new int[9, 9, 10];
+
+
+        for (int Y = 0; Y < 9; Y++)
+            for (int X = 0; X < 9; X++)
+                if (array[Y, X, 0] == 0)
                 {
-                    outputArray[y][x] = new int[10];
-                    for (int z = 0; z < 10; z++)
+
+                    // for number 1 - 9 in sudoku finding small plus numbers
+                    for (int number = 1; number < 10; number++)
                     {
-                        outputArray[y][x][z] = data[y, x, z];
+
+                        if (array[Y, X, number] > 0)
+                        {
+                            arrayCopy = Components.ArrayCopy(array);
+                            array[Y, X, 0] = number;
+                            BasicMetodsForSolve(array);
+                            if (ScanError.MainFunc(array))
+                            {
+                                // create copy of array and if find problem. Use backup.
+                                array = Components.ArrayCopy(arrayCopy);
+                                array[Y, X, number] = -1 * number;
+                                continue;
+                            }
+                            if (ScanMetods.IsSudokuSolved(array)) return array;
+
+                            // use backup
+                            array = Components.ArrayCopy(arrayCopy);
+                        }
                     }
                 }
-            }
-            return outputArray;
-        }
-
-
+        return array;
     }
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

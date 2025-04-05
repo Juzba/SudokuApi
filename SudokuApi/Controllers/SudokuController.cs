@@ -13,8 +13,7 @@ namespace SudokuApi.Controllers
         [HttpPost("solve")]
         public IActionResult Post([FromBody] int[][][] data)
         {
-            string returnedText = "Spuštěno Online: " + ++_count;
-
+            _count++;
             try
             {
 
@@ -23,7 +22,15 @@ namespace SudokuApi.Controllers
                     return StatusCode(401, new { error = "Received data null or Array lenght is Wrong!" });
                 }
 
-                int[][][] returnedArray = SudokuMain.SolveMain(data);
+
+
+                int[][][] returnedArray = SudokuMain.SolveMain(data, out int count, out bool isError);
+
+
+
+                string returnedText = $"Spuštěno Online: {_count}, počet cyklů: {count}, Chyba?: {isError}";
+
+                // vratit chybovou hlašku pokud jsou dve stejne cisla v radku, sekci nebo collumns
 
                 return Ok(new { returnedArray, returnedText, success = true });
 
