@@ -20,7 +20,7 @@
             if (IsMinimumNumbersError(array)) { errorMesage = "Chybné zadání: Minimální počet čísel musí být 17."; return true; }
             if (AreSameNumbersInLine(array, false)
                 || AreSameNumbersInLine(array, true)
-                || AreSameNumbersInOneSection(array)) { errorMesage = "Chybné zadání: Nesmí být stejné čísla v řádku nebo sekci"; return true; }
+                || AreSameNumbersInOneSection(array)) { errorMesage = "Chybné zadání: Nesmí být stejné čísla v řádku nebo sekci."; return true; }
             errorMesage = "";
             return false;
         }

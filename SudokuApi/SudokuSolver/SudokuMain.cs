@@ -6,8 +6,8 @@ public class SudokuMain
 
     public static int[][][] SolveMain(int[][][] data, out string infoMessage)
     {
+        infoMessage = "";
         _count = 0;
-        infoMessage = "ok";
         bool isWrongInput;
 
         // from int [][][] to int [,,]
@@ -29,12 +29,12 @@ public class SudokuMain
 
 
             // final controll for errors in sudoku
-            if (ScanError.MainFunc(array)) { errorMesage = "Vyskytla se chyba!"; }
-            else if (ScanMetods.IsSudokuSolved(array)) { errorMesage = $"Sudoku vyřešeno za {_count} cyklů."; }
+            if (ScanError.MainFunc(array)) { infoMessage = $"Vyskytla se chyba! Počet Cyklů: {_count}."; }
+            else if (ScanMetods.IsSudokuSolved(array)) { infoMessage = $"Sudoku vyřešeno za {_count} cyklů."; }
         }
 
-
-        return Components.ChangeArrayToOutput(array);
+        if (infoMessage == null) infoMessage = $"Count: {_count}";
+            return Components.ChangeArrayToOutput(array);
     }
 
 
